@@ -61,3 +61,11 @@ class RecipeModelTest(TestCase):
 
         # compare the value to the expected result
         self.assertEqual(recipe.difficulty(), "Easy")
+
+    # URL
+    def test_get_absolute_url(self):
+        # get a recipe object to test
+        recipe = Recipe.objects.get(id=1)
+
+        # compare the value to the expected result
+        self.assertEqual(recipe.get_absolute_url(), "/list/1")
