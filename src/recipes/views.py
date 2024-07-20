@@ -1,15 +1,19 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView   #to display lists and details
 from .models import Recipe   #to access Recipe model
 from django.contrib.auth.mixins import LoginRequiredMixin   #to protect class-based view
 from django.contrib.auth.decorators import login_required   #to protect function-based views
-from .forms import RecipesSearchForm
+from .forms import RecipesSearchForm, AddRecipeForm
 import pandas as pd
 from .utils import get_chart
+from django.contrib import messages
 
 # Create your views here.
 def home(request):
     return render(request, 'recipes/home.html')
+
+def about(request):
+    return render(request, "recipes/about.html")
     
 class RecipeListView(LoginRequiredMixin, ListView):             #class-based "protected" view
     model = Recipe                                              #specify model
@@ -98,3 +102,32 @@ def search(request):
 
     #loads page using "context" information
     return render(request, "recipes/search.html", context)
+
+@login_required                                             #function-based "protected" view
+def add_recipe(request):
+
+    if request.method == "POST":
+        #create an instance of AddRecipeForm with the submitted data and files
+        add_recipe_form = AddRecipeForm(request.POST, request.FILES)
+
+        #validate form data
+        if add_recipe_form.is_valid():
+            #save form data to database
+            add_recipe_form.save()
+
+            #add a success message to display to user
+            messages.success(request, "Recipe added successfully")
+
+            #redirect user to add_recipe page
+            return redirect("recipes:list")
+    else:
+        #create an empty form instance if request method is not POST
+        add_recipe_form = AddRecipeForm()
+
+    #prepare data to send from view to template
+    context = {
+        "add_recipe_form": add_recipe_form
+    }
+
+    #load page using context information
+    return render(request, "recipes/add_recipe.html", context)
