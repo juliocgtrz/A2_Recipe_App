@@ -13,25 +13,27 @@
     </head>
     <body>
         {% block content %}
-            <h1 style="text-align: center">Recipes List</h1>
+            <h1 class="recipes-header">Recipes List</h1>
             <br>
-            <div style="text-align: center">
-                <table border="1" cellpadding="5" cellspacing="5" style="text-align: center">
-                    <tr>
-                        <td>Name</td>
-                        <td>Image</td>
-                    </tr>
+            <!-- Table displaying recipes and their images -->
+            <table border="1" cellpadding="5" cellspacing="5">
+                <tr>
+                    <td>Recipe Name</td>
+                    <td>Image</td>
+                </tr>
 
-                    {% for object in object_list %}
-                    <tr>
-                        <td>
-                            <a class="recipe-name" href="{{object.get_absolute_url}}">{{object.name}}</a>
-                        </td>
-                        <td>
-                            <a href="{{object.get_absolute_url}}"><img src="{{object.pic.url}}"></a>
-                        </td>
-                    </tr>
-                    <br>
+                {% for object in object_list %}
+                <tr>
+                    <td>
+                        <a class="recipe-name" href="{{object.get_absolute_url}}">{{object.name}}</a>
+                    </td>
+                    
+                    <td>
+                        <a href="{{object.get_absolute_url}}"><img src="{{object.pic.url}}"></a>
+                    </td>
+                </tr>
+                
+                <br>
                     {% endfor %}
                 </table>
             </div>
