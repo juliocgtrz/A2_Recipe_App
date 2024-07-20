@@ -1,18 +1,45 @@
-<h1>Login</h1>          {% comment %} print heading {% endcomment %}
+{% load static %}
 
-{% comment %} check for error message {% endcomment %}
-{% if error_message %}
-   {{error_message}}
-{% endif %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Recipes Login</title>
+        <link rel="stylesheet" href="{% static 'css/login.css' %}">
+    </head>
 
-{% comment %} print form {% endcomment %}
-<form action="" method="POST" >
-   {% comment %} add Django security token {% endcomment %}
-   {% csrf_token %}   
+    <body>
+        <div class="container">
+            <h1>Login</h1>
 
-   {% comment %} print form received from view  {% endcomment %}
-   {{form}}           
+            <!-- Checks for error message -->
+            {% if error_message %}
+                <p class="error">{{error_message}}</p>
+            {% endif %}
 
-   {% comment %} add button {% endcomment %}
-   <button type="submit" >Login</button>
-</form>
+            <form action="" method="POST" >
+                <!-- Adds Django security token -->
+                {% csrf_token %}   
+
+                <!-- Defines form layout -->
+                <div class="form-group">
+                    {{ form.username.label_tag }}
+                    {{ form.username }}
+                </div>
+
+                <br>
+
+                <div class="form-group">
+                    {{ form.password.label_tag }}
+                    {{ form.password }}
+                </div>
+
+                <br>
+
+                <!-- Login button -->
+                <button type="submit">Login</button>
+            </form>
+        </div>
+    </body>
+</html>
